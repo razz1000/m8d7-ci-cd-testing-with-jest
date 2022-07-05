@@ -3,10 +3,11 @@ import cors from "cors";
 import productsRouter from "./api/products/index.js";
 import usersRouter from "./api/users/index.js";
 import {
-  /* badRequestHandler, */
+  badRequestHandler,
   unauthorizedHandler,
   forbiddenHandler,
   catchAllHandler,
+  notFoundErrorHandler,
 } from "./errorHandlers.js";
 
 const server = express();
@@ -22,7 +23,8 @@ server.use("/products", productsRouter);
 server.use("/users", usersRouter);
 
 // *********************************** ERROR HANDLERS *************************
-/* server.use(badRequestHandler); */
+server.use(badRequestHandler);
+server.use(notFoundErrorHandler);
 server.use(unauthorizedHandler);
 server.use(forbiddenHandler);
 server.use(catchAllHandler);

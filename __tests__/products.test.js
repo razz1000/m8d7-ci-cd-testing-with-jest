@@ -27,6 +27,12 @@ const validProduct = {
   price: 10,
 };
 
+const validProduct3 = {
+  name: "test2",
+  description: "bla bla bla",
+  price: 120,
+};
+
 const invalidProduct = {
   name: "Invalid product",
 };
@@ -60,28 +66,26 @@ describe("Testing the server", () => {
     const response = await client
       .post("/products")
       .send(invalidProduct)
-      .expect(/* 400 */ 500);
+      .expect(400);
   });
 
   // NEW ONES:
   test("Should test if we get a 404 for /products/:id endpoint with a non-existing id.", async () => {
     const response = await client
-      .get(`/products/${invalidProductID}`)
-      .expect(/* 404 */ 500);
+      .get(`/products/62c42f5e3a6efe36b8e5fd32`)
+      .expect(404);
     console.log(response.body);
   });
-  test("Should test if when we are deleting the /products/:id endpointwe we get a 204 if successfull and a get a 404 if product not existing.", async () => {
-    const response = await client
-      .delete(`/products/${validProduct1}`)
-      .expect(/* 204 */ 500);
-    expect(404);
+
+  test("should DELETE /products/:id", async () => {
+    const response = await client.delete(`/products/62c42f5e3a6efe36b8e5fd37`);
+    expect(204);
   });
 
   test("Should test if When updating a /product/:id endpoint with new data. Expect requests to be accepted. Expect 404 with a non-existing id. Expect the response.body.name to be changed", async () => {
     const response = await client
-      .put(`/products/${validProduct2}`)
-
-      .expect(/* 204 */ 500);
-    expect(404);
+      .put("/products/62c43e6a30b740ae8fca5211")
+      .send(validProduct3);
+    expect(204);
   });
 });

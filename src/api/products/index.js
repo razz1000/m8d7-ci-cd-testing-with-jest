@@ -30,7 +30,6 @@ productsRouter.get("/:productId", async (req, res, next) => {
       res.send(user);
     } else {
       next(createError(404, `User with id ${req.params.productId} not found!`));
-      console.log("hello");
     }
   } catch (error) {
     next(error);
@@ -62,7 +61,6 @@ productsRouter.delete("/:productId", async (req, res, next) => {
     if (deletedUser) {
       res.status(204).send();
     } else {
-      res.status(404);
       next(createError(404, `User with id ${req.params.productId} not found!`));
     }
   } catch (error) {
