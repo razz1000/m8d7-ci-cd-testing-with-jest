@@ -1,65 +1,73 @@
-import express from "express"
-import createError from "http-errors"
-import ProductsModel from "./model.js"
+import express from "express";
+import createError from "http-errors";
+import ProductsModel from "./model.js";
 
-const productsRouter = express.Router()
+const productsRouter = express.Router();
 
 productsRouter.post("/", async (req, res, next) => {
   try {
-    const newUser = new ProductsModel(req.body)
-    const { _id } = await newUser.save()
-    res.status(201).send({ _id })
+    const newUser = new ProductsModel(req.body);
+    const { _id } = await newUser.save();
+    res.status(201).send({ _id });
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 productsRouter.get("/", async (req, res, next) => {
   try {
-    const users = await ProductsModel.find()
-    res.send(users)
+    const users = await ProductsModel.find();
+    res.send(users);
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 productsRouter.get("/:productId", async (req, res, next) => {
   try {
-    const user = await ProductsModel.findById(req.params.productId)
+    const user = await ProductsModel.findById(req.params.productId);
     if (user) {
-      res.send(user)
+      res.send(user);
     } else {
-      next(createError(404, `User with id ${req.params.productId} not found!`))
+      next(createError(404, `User with id ${req.params.productId} not found!`));
+      console.log("hello");
     }
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 productsRouter.put("/:productId", async (req, res, next) => {
   try {
-    const updatedUser = await ProductsModel.findByIdAndUpdate(req.params.productId, req.body, { new: true, runValidators: true })
+    const updatedUser = await ProductsModel.findByIdAndUpdate(
+      req.params.productId,
+      req.body,
+      { new: true, runValidators: true }
+    );
     if (updatedUser) {
-      res.send(updatedUser)
+      res.send(updatedUser);
     } else {
-      next(createError(404, `User with id ${req.params.productId} not found!`))
+      next(createError(404, `User with id ${req.params.productId} not found!`));
     }
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 productsRouter.delete("/:productId", async (req, res, next) => {
   try {
-    const deletedUser = await ProductsModel.findByIdAndUpdate(req.params.productId)
+    const deletedUser = await ProductsModel.findByIdAndUpdate(
+      req.params.productId
+    );
     if (deletedUser) {
-      res.status(204).send()
+      res.status(204).send();
     } else {
-      next(createError(404, `User with id ${req.params.productId} not found!`))
+      res.status(404);
+      next(createError(404, `User with id ${req.params.productId} not found!`));
     }
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
-export default productsRouter
+export default productsRouter;
